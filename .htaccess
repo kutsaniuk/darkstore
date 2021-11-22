@@ -1,0 +1,13 @@
+Options -Indexes
+DirectoryIndex index.php
+RewriteEngine on
+RewriteBase /
+RewriteCond $1 !^(index\.php|images|robots\.txt|public|server\.php|img|styles|js|development-bundle|css}i|pics|image)
+RewriteCond %{REQUEST_URI} !\.(css|js|jpg|gif)$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.php?/$1 [L]
+AddDefaultCharset utf8
+SetEnvIfNoCase Content-Type \
+"^multipart/form-data;" "MODSEC_NOPOSTBUFFERING=Do not buffer file uploads"
+AddDefaultCharset UTF-8
