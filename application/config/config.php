@@ -50,7 +50,7 @@ $config['checkbox_client_id']='d0d0a2d6-97fd-4f62-80c2-546a1c5ed232';
 $config['checkbox_secret']='TG.wQJKDZhST4fUT.uty~BWMh5';   
 
 $config['google_api_key']='AIzaSyBg692b4SfSdhiJxktvQC_KZpGYb-vYDbg';   
-
+$config['telegram_bot']='2110384605:AAEc4sIPc3s2vBLvrKz2K_1Ng0O5V8AJzVk';
 
  
 $config['charset'] = 'UTF-8';
