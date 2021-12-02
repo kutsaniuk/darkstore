@@ -87,6 +87,33 @@ class BaseRow
 			 
 		}
 	} 
+
+
+	public function get_col_settings($settings=[],$uniq=0)
+	{
+		if (!isset($settings['table_name'])) $settings['table_name']=$this->table;
+		
+		if (count($this->table_cols_bd)) return $this->table_cols_bd;
+		$this->table_cols_bd = $this->CI->db->get_where('table_cols',$settings)->result_array();
+		
+		if ($uniq==0) return $this->table_cols_bd;
+		
+		$list=[];
+		foreach ($this->table_cols_bd as $val) 
+				$list[$val['key']]=$val;
+			 
+			
+		return $list;
+	}
+
+	public function get_table_cols()
+	{
+		$cols=[];
+		foreach ($this->get_col_settings(['column'=>1]) as $row) 
+			$cols[$row['name']]=$row['placeholder'];
+			
+		return $cols; 
+	}
 	
 	function get_filters()
 	{
@@ -314,13 +341,30 @@ class BaseRow
 		
 		return $data;
 	}
+
+
+	public function json_to_select($json)
+	{
+		
+		if (strlen($json)<1) return '';
+		$select=json_decode($json);
+		if (!$select) {
+			$select=$json; 
+		}
+		elseif (!is_array($select)) $select=get_object_vars($select); 
+		
+		if (is_array($select) && count($select)==1) $select=$select[0];
+		
+		return $select;
+	}
+	
 	
 	//генерация полей формы для админки
 	public function generate_form($prop,$type='',$class='',$select_list=array(),$placeholder='',$req=0 )
 	{
 		if ($req)  $addstr='required';
 		else $addstr='';
-		
+		$html='';
 		
 		
 		//die('='.$req);

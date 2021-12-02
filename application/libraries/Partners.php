@@ -4,11 +4,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once './application/libraries/BaseRow.php';
 
-class Orders    extends BaseRow
+class Partners    extends BaseRow
 {
 	public function get_table_cols()
 	{
-		return array('id'=>'Номер заказа','status_info'=>'Статус','nomeclature'=>'Информация','partner_id'=>'Партнер','number'=>'Номер телефона','address'=>'Адрес' ,'zip'=>'zip'); 
+		return array('id'=>'Номер','name'=>'Название' ); 
 	} 
 	
 	public function get_table_cols_template()
@@ -16,28 +16,9 @@ class Orders    extends BaseRow
 		return array('partner_id'=>'select_partners','img'=>'<img src="/upload/[val]" width="50" >'); 
 	} 
 	
-	function status_info($status=-1,$thisid=0)
-	{
-		if ($status==-1 && $this->id)
-		{
-			$status=$this->status;
-		}
-		
-		$statuses=[
-			-1=>'Ожидает подтверждение, <a href="?send_status='.($this->id ? $this->id : $thisid).'">Отправить</a>',
-			0=>'Заказ принят, отправляем в службу доставки',
-			1=>'Ожидаем приезда курьера',
-			2=>'Доставляется курьером',
-			3=>'Доставлен',
-			4=>'Возникла ошибка, свяжитесь с администратором',
-		];
-		
-		return $statuses[$status];
-	}
-	
+ 
 	public function get_table_row($key,$row=array())
 	{
-		if ($key=='status_info') return $this->status_info($row['status'],$row['id']).'<br>'.$row['status_text'];
 		if (count($row)<1) $row=$this->properties;
 		$template = $this->get_table_cols_template();
 		if (isset($template[$key])) {
@@ -75,29 +56,29 @@ class Orders    extends BaseRow
 	public function generate_form_rows($class='')
 	{
 		//простые поля  
-		$rows=array('number'=>'text','address'=>'text', 'zip'=>'text'  );
-		$placeholder=array('partner_id'=>'Партнер','number'=>'Номер телефона','address'=>'Адрес', 'zip'=>'zip','zones'=>'Зоны (через запятую)' ,'lat'=>'lat','lng'=>'lng');
+		$rows=array('name'=>'text','checkbox_client_id'=>'text', 'checkbox_secret'=>'text','chat_id'=>'text'  );
+		$placeholder=array('name'=>'Партнер','checkbox_client_id'=>'Чекбокс client_id ', 
+		'checkbox_secret'=>'Чекбокс секоеь','chat_id'=>'ИД чата телеграм'  );
 		$form=array();
 		foreach ($rows as $k=>$v) {
 			$form[$k]['form']=$this->generate_form($k,$v,$class,array(),$placeholder[$k]);
 			$form[$k]['title']=$placeholder[$k];
 		} 
 		
-		//со справочниками
-		$rows=array('partner_id'=>'partners','status'=>[-1=>'Создан, ожидает подтверждения', 0=>'Отправляем запрос в службу доставки', 
-		1=>'Ожидает курьера', 2=>'В процессе', 3=>'Готово'] );
+		/*
+		$rows=array('partner_id'=>'partners' );
 		foreach ($rows as $k=>$v) {
 			$form[$k]['form']=$this->generate_form($k,'select',$class,$v,$placeholder[$k]);
 			$form[$k]['title']=$placeholder[$k];
 		}
-		
+		*/
 		
 		return $form;
 	} 
 	
 	public function __construct($CI,$id=0) 
 	{ 
-		$this->construct($CI,'orders',$id); 
+		$this->construct($CI,'partners',$id); 
 	} 
 	
 	

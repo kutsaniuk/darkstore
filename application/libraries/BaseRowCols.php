@@ -7,14 +7,7 @@ require_once './application/libraries/BaseRow.php';
 class BaseRowCols extends BaseRow
 {
 	 
-	public function get_table_cols()
-	{
-		$cols=[];
-		foreach ($this->get_col_settings(['column'=>1]) as $row) 
-			$cols[$row['name']]=$row['placeholder'];
-			
-		return $cols; 
-	}
+	
 
 	public function get_table_row($key,$row=array())
 	{

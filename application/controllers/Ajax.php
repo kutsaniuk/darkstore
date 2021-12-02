@@ -16,20 +16,16 @@ class Ajax extends CI_Controller {
 		if ($user->user_type_id!=1 && $user->user_type_id!=6) { $user->logout; redirect2('/login'); } 
 	}
 	
-	public function get_adgroups()
+	public function get_order_info( )
 	{
-		 
-		
-		(new Ya_Bids($this) )->renew_groups((int)$_POST['id']);
-		
-		?>
-		<select   class="form-control" OnChange="$('#f_adgroups_id').val(this.value);" name="adgroups_id">
-			<option value="0" >-- Любая группа обьявлений --</option>
-		<?foreach ((new BaseRow( $this,'ya_adgroups'))->get_all(999,0,'name','asc',['campaigns_id'=>(int)$_POST['id']]) as $client):?> 
-			<option  <?=($_GET['adgroups_id']==$client['id']?'selected':'' ) ?>  value="<?=$client['id']?>" ><?=$client['name']?> #<?=$client['id']?></option>
-		<?endforeach;?>
-		</select>
-		<?
+		$dt=[];
+		foreach ((new Orders($this))->get_all() as $row)
+		{
+			?>
+			<script>$('#td<?=$row['id']?>_status_info').html('<?=(new Orders($this,$row['id']))->status_info()?>');</script>
+			<?
+		}
+			 
 	}
 	
 	public function get_compaigns()

@@ -119,37 +119,7 @@ class Admin55 extends CI_Controller {
 				 
 			}
 		} 
-		elseif ($page=='new_order')
-		{
-			if (strlen(trim($_POST['address']))>0 && strlen(trim($_POST['phone']))>0)
-			{
-				$partner = row('partners',(int)$_POST['partner_id']);
-				$Broniboy = new Broniboy($partner['api_broneboy']);
-				
-				$address = "https://maps.google.com/maps/api/geocode/json?key=".$this->config->item('google_api_key')."&address=".urlencode($_POST['address']);
-				$Res = json_decode(file_get_contents($address));
-				$loc = $Res->results[0]->geometry->location;
-				
-				$order['address']=$_POST['address'];
-				$order['number']=$_POST['phone'];
-				$order['lat']=$loc->lat;
-				$order['lng']=$loc->lng;
-			 
-				$res = $Broniboy->create_order(['zone'=>$partner,'order'=>$order ]);
-				
-				if (!$res)
-				{
-					$Checkbox = new Checkbox($partner['api_checkbox_id'],$partner['api_checkbox_secret']);
-					$res = $Checkbox->create_order(['zone'=>$partner,'order'=>$order ]);
-					
-					if (!$res)
-						$data['result'][]='Ошибка создания заказа, посмотрите логи';
-				}
-				else $data['id']=$res;
-				 
-				 
-			}
-		} 
+		 
 		 
 		$this->load->view('admin/'.$page.'.php',$data);
 		  

@@ -66,13 +66,7 @@
 				$mod = new $model_name($this,$r['id']);
 				?>
                 <tr>
-					<td><a href="/admin55/edit/<?=$model_name?>/<?=$r['id']?>?<?=http_build_query($_GET)?>">
-					<?if (strtolower($model_name)=='patient'):?>
-					Карта пациента
-					<?else:?>
-					Редактировать
-					<?endif;?>
-					</a></td>
+					<td><a href="/admin55/edit/<?=$model_name?>/<?=$r['id']?>?<?=http_build_query($_GET)?>"> 	Редактировать 	</a></td>
 					
 					<?foreach ($mod->get_col_settings(['column'=>1]) as $row):  
 					?>
@@ -87,35 +81,7 @@
 						</div>
 					</td>
 					<?endforeach;?> 
-					<?if (strtolower($model_name)=='patient'):?>
-					<td  >
-						<a target="_blank" href="/admin55/edit/Tasks/0/add?patient=<?=$r['id']?>"><?=l('Создать задачу');?></a>
-						<br>
-						<?=$mod->show_last_task();?>
-					</td>
-					<?elseif (strtolower($model_name)=='sms'):?>
-					<td  >
-						<a href="/admin55/edit/Sms/0/?send_sms=<?=$r['id']?>"><?=l('Разослать');?></a>
-					 
-					</td>
-					<?elseif (strtolower($model_name)=='tasks'):?>
-					<td  >
-						<button id="btn_task_close<?=$r['id']?>" OnClick="$('#task_close<?=$r['id']?>').toggle();" class="btn" ><?=l('Закрыть задачу');?></button>
-						<div id="task_close<?=$r['id']?>" style="display:none">
-							<form   action="javascript:void(null);" method="post" OnSubmit="ajax_post('task_close/<?=$r['id']?>',this,'#res-task_close<?=$r['id']?>');">
-								<input type="text" class="form-control" name="comment" placeholder="<?=l('Комментарий к закрытию');?>"><br>
-								<select name="user_id" class="form-control">
-									<option value="0"><?=l('Не перенаправлять задачу');?></option>
-									<?foreach ((new Users($this))->get_all() as $usr):?>
-									<option value="<?=$usr['id']?>"><?=$usr['name']?></option>
-									<?endforeach;?>
-								</select>
-								<div id="res-task_close<?=$r['id']?>"></div>
-								<button type="submit" class="btn  btn-primary" ><?=l('Завершить');?></button>
-							</form>
-						</div>
-					</td>
-					<?endif;?>
+				 
 					
 					<td><a OnClick="if (!confirm('Вы уверены что желаете удалить этот элемент?')) return false;"  href="/admin55/edit/<?=$model_name?>/<?=$r['id']?>/delete">Удалить</a></td>
                 </tr>

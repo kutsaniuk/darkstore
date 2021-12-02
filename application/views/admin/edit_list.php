@@ -36,13 +36,14 @@ include('header.php');
 				<?foreach ($model->get_all(5000) as $row):?>
                 <tr <?if ($row['orange']==1):?>style="color: orange;"<?endif;?> >
 					<?foreach ($model->get_table_cols() as $key => $val):?>
-					<td title="<?=$val?>"><?=$model->get_table_row($key,$row)?></td>
+					<td title="<?=$val?>" id="td<?=$row['id']?>_<?=$key?>"><?=$model->get_table_row($key,$row)?></td>
 					<?endforeach;?> 
 					<?if ($model->allow_edit()):?>
 					<td><a href="/admin55/edit/<?=$model_name?>/<?=$row['id']?>">Редактировать</a></td>
 					<?endif;?>
 					<td><a OnClick="if (!confirm('Вы уверены что желаете удалить этот элемент?')) return false;" href="/admin55/edit/<?=$model_name?>/<?=$row['id']?>/delete">Удалить</a></td>
                 </tr>
+				
 				<?endforeach;?> 
 				</tbody>
                 <tfoot>
@@ -65,9 +66,18 @@ include('header.php');
         </div>
         <!-- /.col -->
       </div> 
-
+	<div id="ajax_res"></div>
 <?include('footer.php');?>
 	  <script>
+
+		<?if($model_name=='Orders'):?>
+		function get_order_info()
+		{
+			ajax('get_order_info','','#ajax_res')
+		}
+ 		setInterval(get_order_info,5000);
+		<?endif;?>
+
   $(function () {
     $("#table_edit").DataTable();
     

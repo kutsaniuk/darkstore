@@ -110,9 +110,9 @@
            
         </li> 
 		
-		<? /*
+		 
 		<li class="treeview">
-          <a href="/admin55/page/new_order">
+          <a href="/admin55/edit/orders/0/add">
             <i class="fa fa-edit"></i> <span>Создать заказ</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -120,8 +120,16 @@
           </a>
            
         </li> 
-		*/ ?>
-		
+		 
+        <li class="treeview">
+          <a href="/admin55/edit/partners">
+            <i class="fa fa-edit"></i> <span>Партнёры</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+           
+        </li> 
 		<li class="treeview">
           <a href="/admin55/edit/item_type">
             <i class="fa fa-edit"></i> <span>Номенклатура</span>
