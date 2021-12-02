@@ -58,7 +58,7 @@ class Partners    extends BaseRow
 		//простые поля  
 		$rows=array('name'=>'text','checkbox_client_id'=>'text', 'checkbox_secret'=>'text','chat_id'=>'text'  );
 		$placeholder=array('name'=>'Партнер','checkbox_client_id'=>'Чекбокс client_id ', 
-		'checkbox_secret'=>'Чекбокс секоеь','chat_id'=>'ИД чата телеграм'  );
+		'checkbox_secret'=>'Чекбокс секрет','chat_id'=>'ИД чата телеграм'  );
 		$form=array();
 		foreach ($rows as $k=>$v) {
 			$form[$k]['form']=$this->generate_form($k,$v,$class,array(),$placeholder[$k]);
