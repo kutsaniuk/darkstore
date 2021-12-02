@@ -20,11 +20,15 @@ class Cron extends CI_Controller {
 	 
 	public function cron_min1()
 	{
-		$Checkbox = (new Checkbox($this->config->item('checkbox_client_id'),$this->config->item('checkbox_secret')));
+		$Checkbox_main = (new Checkbox($this->config->item('checkbox_client_id'),$this->config->item('checkbox_secret')));
 		 
 		$orders=$this->db->where('status',0)->get('orders')->result_array(); 
 		foreach ($orders as $order)
 		{
+			$partner = row('partners', $order['partner_id']);
+			if ($partner['checkbox_client_id']) $Checkbox  = (new Checkbox($partner('checkbox_client_id'),$partner('checkbox_secret')));
+			else $Checkbox  = $Checkbox_main;
+			
 			if ($order['lat']==0 || $order['lng']==0 )
 			{
 				 
@@ -57,10 +61,23 @@ class Cron extends CI_Controller {
 		$orders=$this->db->where('status >',0)->where('status <',3)->get('orders')->result_array(); 
 		foreach ($orders as $order)
 		{ 
+			$partner = row('partners', $order['partner_id']);
+			if ($partner['checkbox_client_id']) $Checkbox  = (new Checkbox($partner('checkbox_client_id'),$partner('checkbox_secret')));
+			else $Checkbox  = $Checkbox_main;
+			
 			$update = $Checkbox->track_order($order['delivery_id']);
 			if (count($update))
 			{
 				$this->db->where('id',$order['id'])->update('orders',$update);
+				
+				if ($update['status']!=$order['status'] && $update['status_text'])
+				{
+					$telegram = new Telegram($this->config->item('telegram_bot')); 
+					$content = array('chat_id' => $partner['chat_id'],  'text' =>"Изменение статуса заказа {$order['id']} ".$update['status_text']  ); 
+					$telegram->sendMessage($content);
+					
+					
+				}
 			} 
 		}
 		
